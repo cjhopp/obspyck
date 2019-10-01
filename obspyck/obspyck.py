@@ -23,8 +23,8 @@ from collections import OrderedDict
 from ConfigParser import SafeConfigParser, NoOptionError, NoSectionError
 from StringIO import StringIO
 
-from PyQt4 import QtGui, QtCore
-from PyQt4.QtCore import Qt
+from PyQt5 import QtGui, QtCore
+from PyQt5.QtCore import Qt
 import numpy as np
 import matplotlib as mpl
 import matplotlib.pyplot as plt
@@ -1527,7 +1527,7 @@ class ObsPyck(QtGui.QMainWindow):
                 assert(len(self.catalog[0].origins) > 0), "No origin data"
                 origin = self.catalog[0].origins[0]
                 self._rotateLQT(st, origin)
-            except Exception, e:
+            except Exception as e:
                 self.widgets.qToolButton_rotateLQT.setChecked(False)
                 err = str(e)
                 err += "\nError during rotating to LQT. Showing unrotated data."
@@ -1537,7 +1537,7 @@ class ObsPyck(QtGui.QMainWindow):
                 assert(len(self.catalog[0].origins) > 0), "No origin data"
                 origin = self.catalog[0].origins[0]
                 self._rotateZRT(st, origin)
-            except Exception, e:
+            except Exception as e:
                 self.widgets.qToolButton_rotateZRT.setChecked(False)
                 err = str(e)
                 err += "\nError during rotating to ZRT. Showing unrotated data."
@@ -4818,14 +4818,14 @@ def main():
             src = os.path.join(
                 os.path.dirname(__file__), "example.cfg")
             shutil.copy(src, config_file)
-            print "created example config file: {}".format(config_file)
+            print("created example config file: {}".format(config_file))
 
     if options.time is None:
         msg = 'Time option ("-t", "--time") must be specified.'
         raise Exception(msg)
-    print "Running ObsPyck version {} (location: {})".format(__version__,
-                                                             __file__)
-    print "using config file: {}".format(config_file)
+    print("Running ObsPyck version {} (location: {})".format(__version__,
+                                                             __file__))
+    print("using config file: {}".format(config_file))
     config = SafeConfigParser(allow_no_value=True)
     # make all config keys case sensitive
     config.optionxform = str
