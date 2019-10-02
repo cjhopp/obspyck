@@ -25,7 +25,7 @@ import matplotlib as mpl
 from PyQt5 import QtWidgets
 from matplotlib.colors import ColorConverter
 from matplotlib.figure import Figure
-from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as QFigureCanvas
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as QFigureCanvas
 from matplotlib.widgets import MultiCursor as MplMultiCursor
 
 import obspy
