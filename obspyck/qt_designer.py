@@ -72,7 +72,7 @@ class Ui_qMainWindow_obsPyck(object):
         self.layoutWidgetxx.setObjectName(_fromUtf8("layoutWidgetxx"))
         self.leftVerticalLayout = QtWidgets.QVBoxLayout(self.layoutWidgetxx)
         self.leftVerticalLayout.setSizeConstraint(QtWidgets.QLayout.SetMinAndMaxSize)
-        self.leftVerticalLayout.setMargin(0)
+        self.leftVerticalLayout.setContentsMargins(0, 0, 0, 0)
         self.leftVerticalLayout.setSpacing(0)
         self.leftVerticalLayout.setObjectName(_fromUtf8("leftVerticalLayout"))
         self.qToolButton_clearAll = QtWidgets.QToolButton(self.layoutWidgetxx)

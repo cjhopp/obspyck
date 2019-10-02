@@ -19,7 +19,6 @@ import subprocess
 import sys
 import tempfile
 import warnings
-from io import StringIO
 
 import numpy as np
 import matplotlib as mpl
@@ -31,6 +30,7 @@ from matplotlib.widgets import MultiCursor as MplMultiCursor
 
 import obspy
 from obspy import Trace, Inventory
+from obspy.core.inventory import Response
 import obspy.clients.arclink
 from obspy import UTCDateTime, read_inventory, read, Stream
 from obspy.clients.arclink import Client as ArcLinkClient
@@ -285,7 +285,8 @@ def _get_metadata(tr, inv):
             tr.id, tr.stats.starttime)
         orientation = get_orientation(
             inv, tr.id, tr.stats.starttime)
-        response = inv.get_response(tr.id, tr.stats.starttime)
+        response = Response()
+        # response = inv.get_response(tr.id, tr.stats.starttime)
     except Exception as e:
         if str(e).startswith('No matching '):
             return None
@@ -312,8 +313,7 @@ def _attach_metadata(st, inventories):
             metadata.append(metadata_)
         if not metadata:
             msg = 'Failed to get response for {}!'.format(tr.id)
-            print(msg)
-            # raise Exception(msg)
+            raise Exception(msg)
         elif len(metadata) > 1:
             msg = ('Found multiple matching metadata entries for {}, using '
                    'first.').format(tr.id)
@@ -859,13 +859,13 @@ def setup_external_programs(options, config):
         os.symlink(os.path.join(pluginpath, "VELOCITY_MODELS"),
                    os.path.join(tmp_dir, "VELOCITY_MODELS"))
     # Setup external programs #############################################
-    for prog_basename, prog_dict in PROGRAMS.iteritems():
+    for prog_basename, prog_dict in PROGRAMS.items():
         prog_srcpath = os.path.join(pluginpath, prog_basename)
         prog_tmpdir = os.path.join(tmp_dir, prog_basename)
         prog_dict['dir'] = prog_tmpdir
         shutil.copytree(prog_srcpath, prog_tmpdir, symlinks=True)
         prog_dict['files'] = {}
-        for key, filename in prog_dict['filenames'].iteritems():
+        for key, filename in prog_dict['filenames'].items():
             prog_dict['files'][key] = os.path.join(prog_tmpdir, filename)
         prog_dict['files']['exe'] = "__".join(\
                 [prog_dict['filenames']['exe'], system, architecture])

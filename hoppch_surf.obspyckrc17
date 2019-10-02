@@ -16,7 +16,7 @@ ignore_gse2_chksum_error = true
 verbosity = verbose
 zero_mean = true
 normalization = true
-no_metadata = false
+no_metadata = true
 # colormaps are being looked up by name:
 #   - first: if possible as `from obspy.imaging.cm import <name>`
 #   - if that fails: using `matplotlib.cm.get_cmap(name=<name>)`
@@ -36,6 +36,15 @@ magnitude_picker_width = 10
 # QuakeML, use at your own risk!
 allow_multiple_picks_with_same_seed_id = true
 
+[seismic_phases]
+# keys: phase hint (case sensitive)
+# values: color specification understood by matplotlib.colors.ColorConverter.to_rgb()
+#         (matplotlib color names, hex color strings, ...)
+# please note that some parts might (especially interactions with location routines etc.)
+# very likely use hard coded 'P' and 'S' phases so check if you're getting the
+# expected results when using other phase names! Modify at your own risk!
+P = red
+S = blue
 
 [station_combinations]
 #EXAMPLE1 = II.PFO.00.LH?,GE.APE..LH?,GE.PSZ..LH?,CI.BBR..LH*,IV.PRMA..LH?,G.RER..LH*
@@ -58,6 +67,7 @@ SV = SV.OB13..XN*,SV.OB14..XN*,SV.OB15..XN*,SV.OT16..XN*,SV.OT17..XN*,SV.OT18..X
      SV.H112..XN*,SV.H12..XN*,SV.H13..XN*,SV.H14..XN*,SV.H15..XN*,SV.H16..XN*,SV.H17..XN*,\
      SV.H18..XN*,SV.H19..XN*,SV.H21..XN*,SV.H210..XN*,SV.H211..XN*,SV.H212..XN*,SV.H22..XN*,\
      SV.H23..XN*,SV.H24..XN*,SV.H25..XN*,SV.H26..XN*,SV.H27..XN*,SV.H28..XN*,SV.H29..XN*
+
 [seed_id_lookup]
 # wildcards ("?", "*") and regex (e.g. "[EH]*") are only allowed in channel!
 # lookup of id can be specified by (and is performed in exactly this order):
@@ -87,6 +97,7 @@ filter = false
 filter_type = lowpass
 filter_highpass = 0.0
 filter_lowpass = 42000.0
+filter_corners = 3
 sta = 0.5
 lta = 10.0
 ar_f1 = 1.0

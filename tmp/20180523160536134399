@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <q:quakeml xmlns="http://quakeml.org/xmlns/bed/1.2" xmlns:q="http://quakeml.org/xmlns/quakeml/1.2" xmlns:ns0="smi:local/hmc">
-  <eventParameters publicID="smi:local/7e481ea3-5646-4f0a-bc84-340a8bf20be4">
+  <eventParameters publicID="smi:local/1e54c12e-f587-41de-ad4b-a039dde2decd">
     <event publicID="smi:local/20180523160536134399">
       <origin publicID="smi:local/9f4638cd-77fb-43f9-9932-bbc36d01e52b">
         <time>

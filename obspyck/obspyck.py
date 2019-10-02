@@ -21,7 +21,7 @@ import tempfile
 import warnings
 from collections import OrderedDict
 from configparser import SafeConfigParser, NoOptionError, NoSectionError
-from io import StringIO
+from io import BytesIO
 
 from PyQt5 import QtGui, QtCore, QtWidgets
 from PyQt5.QtCore import Qt
@@ -1550,6 +1550,7 @@ class ObsPyck(QtWidgets.QMainWindow):
                 self.widgets.qToolButton_trigger.setChecked(False)
                 err = "Error during triggering. Showing waveform data."
                 self.error(err)
+        print('Finished Stream Update!')
 
     def updatePlot(self, keep_ylims=True):
         """
@@ -2255,7 +2256,7 @@ class ObsPyck(QtWidgets.QMainWindow):
             sta_map_tmp.setdefault(sta[:4], set()).add(sta)
         sta_map = {}
         sta_map_reverse = {}
-        for sta_short, stations in sta_map_tmp.iteritems():
+        for sta_short, stations in sta_map_tmp.items():
             stations = list(stations)
             if len(stations) == 1:
                 sta_map[stations[0]] = sta_short
@@ -4155,8 +4156,11 @@ class ObsPyck(QtWidgets.QMainWindow):
         # plot picks and arrivals
         # seiscomp does not store location code with picks, so allow to
         # match any location code in that case..
-        if event.get("creation_info", {}).get("author", "").startswith("scevent"):
-            loc = None
+        try:
+            if event.get("creation_info", {}).get("author", "").startswith("scevent"):
+                loc = None
+        except:
+            print('No CreationInfo for this event')
         picks = self.getPicks(network=net, station=sta)
         try:
             arrivals = event.origins[0].arrivals
@@ -4599,11 +4603,10 @@ class ObsPyck(QtWidgets.QMainWindow):
             self.error(msg)
             merge_events_in_catalog(self.catalog)
 
-        string_io = StringIO()
-        catalog.write(string_io, format="QUAKEML")
-        string_io.seek(0)
-
-        self.update_qml_text(string_io.read())
+        bytes_io = BytesIO()
+        catalog.write(bytes_io, format="QUAKEML")
+        bytes_io.seek(0)
+        self.update_qml_text(bytes_io.read().decode('UTF-8'))
         ev = self.catalog[0]
 
         public = ev.get("extra", {}).get('public', {}).get('value', "false")
@@ -4841,7 +4844,8 @@ def main():
     # Create the GUI application
     qApp = QtWidgets.QApplication(sys.argv)
     obspyck = ObsPyck(clients, streams, options, KEYS, config, inventories)
-    qApp.connect(qApp, QtCore.SIGNAL("aboutToQuit()"), obspyck.cleanup)
+    # qApp.connect(qApp, QtCore.SIGNAL("aboutToQuit()"), obspyck.cleanup)
+    qApp.aboutToQuit.connect(obspyck.cleanup)
     os._exit(qApp.exec_())
 
 
