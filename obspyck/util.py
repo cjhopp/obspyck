@@ -19,11 +19,11 @@ import subprocess
 import sys
 import tempfile
 import warnings
-from StringIO import StringIO
+from io import StringIO
 
-import PyQt4
 import numpy as np
 import matplotlib as mpl
+from PyQt5 import QtWidgets
 from matplotlib.colors import ColorConverter
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as QFigureCanvas
@@ -312,7 +312,8 @@ def _attach_metadata(st, inventories):
             metadata.append(metadata_)
         if not metadata:
             msg = 'Failed to get response for {}!'.format(tr.id)
-            raise Exception(msg)
+            print(msg)
+            # raise Exception(msg)
         elif len(metadata) > 1:
             msg = ('Found multiple matching metadata entries for {}, using '
                    'first.').format(tr.id)
@@ -1112,7 +1113,7 @@ class SplitWriter():
         Sends msg to all childrens write method.
         """
         for obj in self.children:
-            if isinstance(obj, PyQt4.QtGui.QPlainTextEdit):
+            if isinstance(obj, QtWidgets.QPlainTextEdit):
                 if msg == '\n':
                     return
                 if msg.endswith('\n'):

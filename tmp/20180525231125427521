@@ -1,0 +1,181 @@
+<?xml version='1.0' encoding='utf-8'?>
+<q:quakeml xmlns="http://quakeml.org/xmlns/bed/1.2" xmlns:q="http://quakeml.org/xmlns/quakeml/1.2" xmlns:ns0="smi:local/hmc">
+  <eventParameters publicID="smi:local/134b428d-e595-411e-913c-c75275778cdf">
+    <event publicID="smi:local/20180525231125427521">
+      <origin publicID="smi:local/46d28ba2-0dc9-47d3-8845-3e0aaccc380d">
+        <time>
+          <value>2018-05-25T23:11:25.427521Z</value>
+        </time>
+        <latitude>
+          <value>44.34722531160574</value>
+        </latitude>
+        <longitude>
+          <value>-103.75505840819966</value>
+        </longitude>
+        <depth>
+          <value>104.963398</value>
+        </depth>
+        <ns0:hmc_east>810.838033608903</ns0:hmc_east>
+        <ns0:hmc_north>-1295.63905769649</ns0:hmc_north>
+        <ns0:hmc_elev>104.963398</ns0:hmc_elev>
+      </origin>
+      <magnitude publicID="smi:local/fbade953-6270-4b76-9fc8-2348b71182df">
+        <mag>
+          <value>1.0</value>
+        </mag>
+      </magnitude>
+      <pick publicID="smi:local/ac127c20-3c92-49d7-986e-f78b255994d2">
+        <time>
+          <value>2018-05-25T23:11:25.430280Z</value>
+          <uncertainty>0.0001</uncertainty>
+        </time>
+        <waveformID networkCode="SV" stationCode="OB13" locationCode="" channelCode="XNZ"></waveformID>
+        <phaseHint>P</phaseHint>
+      </pick>
+      <pick publicID="smi:local/0d1a7c87-f503-484b-9ba4-13548d045649">
+        <time>
+          <value>2018-05-25T23:11:25.432080Z</value>
+          <uncertainty>0.0001</uncertainty>
+        </time>
+        <waveformID networkCode="SV" stationCode="OB15" locationCode="" channelCode="XNZ"></waveformID>
+        <phaseHint>P</phaseHint>
+      </pick>
+      <pick publicID="smi:local/3d37ae4c-12b0-4271-9a92-83069fca2b07">
+        <time>
+          <value>2018-05-25T23:11:25.434803Z</value>
+          <uncertainty>0.0001</uncertainty>
+        </time>
+        <waveformID networkCode="SV" stationCode="OB15" locationCode="" channelCode="XNX"></waveformID>
+        <phaseHint>S</phaseHint>
+      </pick>
+      <pick publicID="smi:local/9b8306f6-cb70-4d13-b9f7-b0ee1500017a">
+        <time>
+          <value>2018-05-25T23:11:25.429290Z</value>
+          <uncertainty>0.0001</uncertainty>
+        </time>
+        <waveformID networkCode="SV" stationCode="OT16" locationCode="" channelCode="XNZ"></waveformID>
+        <phaseHint>P</phaseHint>
+      </pick>
+      <pick publicID="smi:local/f38060a0-1c74-4191-a27f-df46831eb59f">
+        <time>
+          <value>2018-05-25T23:11:25.430382Z</value>
+          <uncertainty>0.0001</uncertainty>
+        </time>
+        <waveformID networkCode="SV" stationCode="OT16" locationCode="" channelCode="XNX"></waveformID>
+        <phaseHint>S</phaseHint>
+      </pick>
+      <pick publicID="smi:local/b73b5ad7-58c6-4527-84e7-e3feb4018102">
+        <time>
+          <value>2018-05-25T23:11:25.429285Z</value>
+          <uncertainty>0.0001</uncertainty>
+        </time>
+        <waveformID networkCode="SV" stationCode="OT18" locationCode="" channelCode="XNZ"></waveformID>
+        <phaseHint>P</phaseHint>
+      </pick>
+      <pick publicID="smi:local/7ab20920-bf35-48e0-9a8b-9ca36a6420ea">
+        <time>
+          <value>2018-05-25T23:11:25.430430Z</value>
+          <uncertainty>0.0001</uncertainty>
+        </time>
+        <waveformID networkCode="SV" stationCode="OT18" locationCode="" channelCode="XNX"></waveformID>
+        <phaseHint>S</phaseHint>
+      </pick>
+      <pick publicID="smi:local/91e68be9-bd50-43ec-a062-933231a5ccf3">
+        <time>
+          <value>2018-05-25T23:11:25.429590Z</value>
+          <uncertainty>0.0001</uncertainty>
+        </time>
+        <waveformID networkCode="SV" stationCode="PDB3" locationCode="" channelCode="XNZ"></waveformID>
+        <phaseHint>P</phaseHint>
+      </pick>
+      <pick publicID="smi:local/95de0d0c-dd80-4d97-ba15-39ee11bec317">
+        <time>
+          <value>2018-05-25T23:11:25.431392Z</value>
+          <uncertainty>0.0001</uncertainty>
+        </time>
+        <waveformID networkCode="SV" stationCode="PDB3" locationCode="" channelCode="XNX"></waveformID>
+        <phaseHint>S</phaseHint>
+      </pick>
+      <pick publicID="smi:local/8fc6efb8-3123-455c-aca0-3931c48e0292">
+        <time>
+          <value>2018-05-25T23:11:25.429280Z</value>
+          <uncertainty>0.0001</uncertainty>
+        </time>
+        <waveformID networkCode="SV" stationCode="PDB4" locationCode="" channelCode="XNZ"></waveformID>
+        <phaseHint>P</phaseHint>
+      </pick>
+      <pick publicID="smi:local/987f952a-28cb-40c3-a484-da7a13f6e7bc">
+        <time>
+          <value>2018-05-25T23:11:25.432190Z</value>
+          <uncertainty>0.0001</uncertainty>
+        </time>
+        <waveformID networkCode="SV" stationCode="PDB6" locationCode="" channelCode="XNZ"></waveformID>
+        <phaseHint>P</phaseHint>
+      </pick>
+      <pick publicID="smi:local/6eaa0f2f-3f1e-46e0-97e9-116890a7d0ce">
+        <time>
+          <value>2018-05-25T23:11:25.429395Z</value>
+          <uncertainty>0.0001</uncertainty>
+        </time>
+        <waveformID networkCode="SV" stationCode="PDT1" locationCode="" channelCode="XNZ"></waveformID>
+        <phaseHint>P</phaseHint>
+      </pick>
+      <pick publicID="smi:local/31da334f-fcdd-4bcb-b2cf-6b84e335a8ad">
+        <time>
+          <value>2018-05-25T23:11:25.430769Z</value>
+          <uncertainty>0.0001</uncertainty>
+        </time>
+        <waveformID networkCode="SV" stationCode="PDT1" locationCode="" channelCode="XNX"></waveformID>
+        <phaseHint>S</phaseHint>
+      </pick>
+      <pick publicID="smi:local/6d5c6adb-523f-4a72-9a5c-773683eaa1aa">
+        <time>
+          <value>2018-05-25T23:11:25.430660Z</value>
+          <uncertainty>0.0001</uncertainty>
+        </time>
+        <waveformID networkCode="SV" stationCode="PSB7" locationCode="" channelCode="XNZ"></waveformID>
+        <phaseHint>P</phaseHint>
+      </pick>
+      <pick publicID="smi:local/7732ca73-1436-4b94-9ab1-d0fb92295780">
+        <time>
+          <value>2018-05-25T23:11:25.431564Z</value>
+          <uncertainty>0.0001</uncertainty>
+        </time>
+        <waveformID networkCode="SV" stationCode="PSB9" locationCode="" channelCode="XNZ"></waveformID>
+        <phaseHint>P</phaseHint>
+      </pick>
+      <pick publicID="smi:local/f7fdc408-0cd0-4017-a9d4-7d505807dae4">
+        <time>
+          <value>2018-05-25T23:11:25.433989Z</value>
+          <uncertainty>0.0001</uncertainty>
+        </time>
+        <waveformID networkCode="SV" stationCode="PSB9" locationCode="" channelCode="XNX"></waveformID>
+        <phaseHint>S</phaseHint>
+      </pick>
+      <pick publicID="smi:local/7e5ff905-533d-44f7-8464-7a88b8d31130">
+        <time>
+          <value>2018-05-25T23:11:25.429931Z</value>
+          <uncertainty>0.0001</uncertainty>
+        </time>
+        <waveformID networkCode="SV" stationCode="PST10" locationCode="" channelCode="XNZ"></waveformID>
+        <phaseHint>P</phaseHint>
+      </pick>
+      <pick publicID="smi:local/29128067-0854-454c-8d56-b6379b528e61">
+        <time>
+          <value>2018-05-25T23:11:25.431576Z</value>
+          <uncertainty>0.0001</uncertainty>
+        </time>
+        <waveformID networkCode="SV" stationCode="PST12" locationCode="" channelCode="XNZ"></waveformID>
+        <phaseHint>P</phaseHint>
+      </pick>
+      <pick publicID="smi:local/4a94928e-166d-45b5-ad4b-5d93d6463b37">
+        <time>
+          <value>2018-05-25T23:11:25.433965Z</value>
+          <uncertainty>0.0001</uncertainty>
+        </time>
+        <waveformID networkCode="SV" stationCode="PST12" locationCode="" channelCode="XNX"></waveformID>
+        <phaseHint>S</phaseHint>
+      </pick>
+    </event>
+  </eventParameters>
+</q:quakeml>
