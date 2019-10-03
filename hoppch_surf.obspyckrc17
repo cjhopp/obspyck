@@ -15,8 +15,8 @@ ignore_gse2_chksum_error = true
 # verbosity: one of 'normal', 'verbose', 'debug' or 'quiet'
 verbosity = verbose
 zero_mean = true
-normalization = true
-no_metadata = true
+normalization = false
+no_metadata = false
 # colormaps are being looked up by name:
 #   - first: if possible as `from obspy.imaging.cm import <name>`
 #   - if that fails: using `matplotlib.cm.get_cmap(name=<name>)`

@@ -324,6 +324,7 @@ def _attach_metadata(st, inventories):
                    'first.').format(tr.id)
             warnings.warn(msg)
         response, coordinates, orientation = metadata[0]
+        print(response, coordinates, orientation)
         tr.stats.coordinates = coordinates
         tr.stats.orientation = orientation
         tr.stats.response = response

@@ -1365,7 +1365,7 @@ class ObsPyck(QtWidgets.QMainWindow):
             for ax, st in zip(self.axs, self.streams):
                 offset = len(st[0].id[:-1])
                 ax.text(x, y, st[0].id[:-1] + "_" * len(st), color="k",
-                        transform=ax.transAxes, bbox=bbox, **kwargs)
+                        transform=ax.transAxes, bbox=bbox, fontsize=8, **kwargs)
                 for i_, tr in enumerate(st):
                     color = COMPONENT_COLORS.get(tr.id[-1], "gray")
                     cha = tr.stats.channel
@@ -1374,7 +1374,7 @@ class ObsPyck(QtWidgets.QMainWindow):
                     label = " " * offset + cha[-1]
                     offset = len(label)
                     ax.text(x, y, label, color=color, transform=ax.transAxes,
-                            **kwargs)
+                            fontsize=8, **kwargs)
         else:
             for ax, tr in zip(self.axs, self.streams[self.stPt]):
                 ax.text(x, y, tr.id, color="k", transform=ax.transAxes,
@@ -3162,9 +3162,8 @@ class ObsPyck(QtWidgets.QMainWindow):
         trans = []
         self.trans = trans
         t = []
-        alphas = {'Z': 1.0, 'L': 1.0,
-                  'N': 0.4, 'Q': 0.4, 'R': 0.4, 'E': 0.4, 'T': 0.4}
-        print('To the loop')
+        alphas = {'Z': 1.0, 'L': 1.0, '1': 1.0,
+                  'N': 0.8, 'Q': 0.8, 'R': 0.8, 'E': 0.8, 'T': 0.8}
         for i, st in enumerate(self.streams_bkp):
             st = st.copy()
             for j, tr in enumerate(st):
@@ -3211,7 +3210,7 @@ class ObsPyck(QtWidgets.QMainWindow):
                     scaling = 1.0
                     data_ = tr.data
                 plts.append(ax.plot(sampletimes, data_, color=color, alpha=alpha,
-                                    zorder=1000)[0])
+                                    zorder=1000, linewidth=1.)[0])
             # plot picks and arrivals
             # seiscomp does not store location code with picks, so allow to
             # match any location code in that case..
