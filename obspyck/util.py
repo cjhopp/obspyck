@@ -121,14 +121,19 @@ PROGRAMS = {
         'nlloc': {'filenames': {'exe': "NLLoc", 'phases': "nlloc.obs",
                                 'summary': "nlloc.hyp",
                                 'scatter': "nlloc.scat"}},
-        'hyp_2000': {'filenames': {'exe': "hyp2000",'control': "bay2000.inp",
+        # 'hyp_2000': {'filenames': {'exe': "hyp2000",'control': "bay2000.inp",
+        #                            'phases': "hyp2000.pha",
+        #                            'stations': "stations.dat",
+        #                            'summary': "hypo.prt"}},
+        'hyp_2000': {'filenames': {'exe': "hyp2000", 'control': "hypinst",
                                    'phases': "hyp2000.pha",
-                                   'stations': "stations.dat",
+                                   'stations': "hyp_stations.dat",
                                    'summary': "hypo.prt"}},
+
         'focmec': {'filenames': {'exe': "rfocmec", 'phases': "focmec.dat",
-                                 'stdout': "focmec.stdout",
-                                 'summary': "focmec.out"}}}
-COMPONENT_COLORS = {'Z': "k", 'N': "b", 'E': "r"}
+                                     'stdout': "focmec.stdout",
+                                     'summary': "focmec.out"}}}
+COMPONENT_COLORS = {'Z': "k", 'N': "b", 'E': "r", '1': 'k'}
 WIDGET_NAMES = ("qToolButton_clearAll", "qToolButton_clearOrigMag",
         "qToolButton_clearFocMec", "qToolButton_doHyp2000",
         "qToolButton_doNlloc", "qComboBox_nllocModel",

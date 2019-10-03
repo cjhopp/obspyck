@@ -1,0 +1,61 @@
+* simple location of a Geysers eq
+* Requires hyp 1.3 or greater and uses 4th generation station delay files
+
+* These are standard Northern Calif network startup commands:
+* TYP 'Setting Northern California defaults'
+LET 5 2 3 2 2				/Use new, longer SEED station codes
+RMS 4 .16 2 3				/Residual weighting
+ERR .20					/Standard timing error
+POS 1.83				/P to S ratio
+REP T F			/Log events to terminal; don't print unweighted stations
+MIN 5					/Min number of stations
+NET 0					
+* ZTR 15					/Trial depth
+DI1 1 50 3 6				/Initial Distance weighting
+DIS 4 30 1 2				/Main Distance weighting
+WET 1. .5 .2 .1				/Weights for P weight codes 0-3
+JUN T						/Forces a solution to keep all phase readings
+
+* OUTPUT FORMAT
+ERF T					/Send error messages to terminal
+TOP F					/No page ejects
+LST 2 1 1				/station list or models in printfile
+KPR 2					/Medium print output each event
+H71 3 1 3				/Use hypo71 summary format for this test
+KEP T
+
+* STATION DATA
+TYP Read in stations:
+STA 'hyp_stations.dat'    			 /Read ASCII file of all stations.
+* FMC 'all2000seed.fmc' T 0 		/Read duration magnitude correction history
+
+* CRUSTAL MODEL
+TYP Read in crustal model(s):
+* CRH 1 'surf.crh'
+# use HYPOELLIPSE for more depth flexibility
+CRE 1 'surf.crh' 30000 T
+* DEL 0 'hyp_stations.del'
+
+* SET DEFAULT PHASE FILE BUT GIVE USER A CHANCE TO CHANGE IT
+TYP Hit enter or carriage-return to keep the test filenames:
+TYP (Also tests the phase file to use its format)
+PHS 'hyp_input.dat'
+* PHS
+FIL					/Examine phase file and set its format
+
+* SET DEFAULT PRINT FILE BUT GIVE USER A CHANCE TO CHANGE IT
+PRT 'hyp_output.prt'
+* PRT
+
+* SET DEFAULT SUMMARY FILE BUT GIVE USER A CHANCE TO CHANGE IT
+SUM 'hyp_output.csv'
+* SUM
+
+* SET DEFAULT ARCHIVE FILE BUT GIVE USER A CHANCE TO CHANGE IT
+ARC 'hyp_output.arc'
+* ARC
+
+* TYP 'Now type LOC to locate the earthquake'
+LOC
+* Stop execution of hypoinverse
+STO

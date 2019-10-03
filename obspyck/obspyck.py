@@ -1550,7 +1550,6 @@ class ObsPyck(QtWidgets.QMainWindow):
                 self.widgets.qToolButton_trigger.setChecked(False)
                 err = "Error during triggering. Showing waveform data."
                 self.error(err)
-        print('Finished Stream Update!')
 
     def updatePlot(self, keep_ylims=True):
         """
@@ -3165,6 +3164,7 @@ class ObsPyck(QtWidgets.QMainWindow):
         t = []
         alphas = {'Z': 1.0, 'L': 1.0,
                   'N': 0.4, 'Q': 0.4, 'R': 0.4, 'E': 0.4, 'T': 0.4}
+        print('To the loop')
         for i, st in enumerate(self.streams_bkp):
             st = st.copy()
             for j, tr in enumerate(st):
@@ -3215,8 +3215,11 @@ class ObsPyck(QtWidgets.QMainWindow):
             # plot picks and arrivals
             # seiscomp does not store location code with picks, so allow to
             # match any location code in that case..
-            if str(event.get("creation_info", {}).get("author", "")).startswith("scevent"):
-                loc = None
+            try:
+                if event.get("creation_info", {}).get("author", "").startswith("scevent"):
+                    loc = None
+            except:
+                print('No CreationInfo for this event')
             picks = self.getPicks(network=net, station=sta)
             try:
                 arrivals = event.origins[0].arrivals

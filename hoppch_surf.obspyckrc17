@@ -35,7 +35,7 @@ magnitude_picker_width = 10
 # experimental, not sure what happens when modifying/deleting/saving to
 # QuakeML, use at your own risk!
 allow_multiple_picks_with_same_seed_id = true
-# percentage to scroll with wheel, deciaml from 0.0 to 1.0
+# percentage to scroll with wheel, decimal from 0.0 to 1.0
 scrollWheelPercentage = 0.30
 # whether to revert scroll direction
 scrollWheelInvert = false
@@ -73,10 +73,10 @@ NS = NZ.ALRZ.10.EH*,NZ.ARAZ.10.EH*,NZ.HRRZ.10.EH*,NZ.NS01.10.EH*,NZ.NS02.10.EH*,
 SV = SV.OB13..XN*,SV.OB14..XN*,SV.OB15..XN*,SV.OT16..XN*,SV.OT17..XN*,SV.OT18..XN*,\
      SV.PDB3..XN*,SV.PDB4..XN*,SV.PDB6..XN*,SV.PDT1..XN*,SV.PDT2..XN*,SV.PDT5..XN*,\
      SV.PSB7..XN*,SV.PSB8..XN*,SV.PSB9..XN*,SV.PST10..XN*,SV.PST11..XN*,SV.PST12..XN*,\
-     SV.W11..XN*,SV.W22..XN*,SV.W33..XN*,SV.W44..XN*,SV.H11..XN*,SV.H110..XN*SV.H111..XN*,\
-     SV.H112..XN*,SV.H12..XN*,SV.H13..XN*,SV.H14..XN*,SV.H15..XN*,SV.H16..XN*,SV.H17..XN*,\
-     SV.H18..XN*,SV.H19..XN*,SV.H21..XN*,SV.H210..XN*,SV.H211..XN*,SV.H212..XN*,SV.H22..XN*,\
-     SV.H23..XN*,SV.H24..XN*,SV.H25..XN*,SV.H26..XN*,SV.H27..XN*,SV.H28..XN*,SV.H29..XN*
+     SV.W11..XN*,SV.W22..XN*,SV.W33..XN*,SV.W44..XN*,SV.PDB01..XN*,SV.PDB10..XN*SV.PDB11..XN*,\
+     SV.PDB12..XN*,SV.PDB02..XN*,SV.PDB03..XN*,SV.PDB04..XN*,SV.PDB05..XN*,SV.PDB06..XN*,SV.PDB07..XN*,\
+     SV.PDB08..XN*,SV.PDB09..XN*,SV.OT01..XN*,SV.OT10..XN*,SV.OT11..XN*,SV.OT12..XN*,SV.OT02..XN*,\
+     SV.OT03..XN*,SV.OT04..XN*,SV.OT05..XN*,SV.OT06..XN*,SV.OT07..XN*,SV.OT08..XN*,SV.OT09..XN*
 
 [seed_id_lookup]
 # wildcards ("?", "*") and regex (e.g. "[EH]*") are only allowed in channel!
