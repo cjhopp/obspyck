@@ -1362,10 +1362,11 @@ class ObsPyck(QtWidgets.QMainWindow):
         kwargs = dict(va="top", ha="left", fontsize=18, family='monospace',
                       zorder=10000)
         if self.widgets.qToolButton_overview.isChecked():
+            kwargs['fontsize'] = 10
             for ax, st in zip(self.axs, self.streams):
                 offset = len(st[0].id[:-1])
                 ax.text(x, y, st[0].id[:-1] + "_" * len(st), color="k",
-                        transform=ax.transAxes, bbox=bbox, fontsize=8, **kwargs)
+                        transform=ax.transAxes, bbox=bbox, **kwargs)
                 for i_, tr in enumerate(st):
                     color = COMPONENT_COLORS.get(tr.id[-1], "gray")
                     cha = tr.stats.channel
@@ -1374,7 +1375,7 @@ class ObsPyck(QtWidgets.QMainWindow):
                     label = " " * offset + cha[-1]
                     offset = len(label)
                     ax.text(x, y, label, color=color, transform=ax.transAxes,
-                            fontsize=8, **kwargs)
+                            **kwargs)
         else:
             for ax, tr in zip(self.axs, self.streams[self.stPt]):
                 ax.text(x, y, tr.id, color="k", transform=ax.transAxes,
