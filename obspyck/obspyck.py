@@ -3218,8 +3218,8 @@ class ObsPyck(QtWidgets.QMainWindow):
             try:
                 if event.get("creation_info", {}).get("author", "").startswith("scevent"):
                     loc = None
-            except:
-                print('No CreationInfo for this event')
+            except AttributeError: # If no creation_info
+                pass
             picks = self.getPicks(network=net, station=sta)
             try:
                 arrivals = event.origins[0].arrivals
@@ -3304,7 +3304,6 @@ class ObsPyck(QtWidgets.QMainWindow):
                 o.depth_errors.uncertainty / 1e3, o.quality.standard_error))
         except:
             pass
-
         ypos = 0.97
         xpos = 0.03
         info = ["Origin:",
@@ -3336,7 +3335,6 @@ class ObsPyck(QtWidgets.QMainWindow):
         link = "http://maps.google.de/maps?f=q&q=%.6f,%.6f" % \
                (o.latitude, o.longitude)
         self.widgets.qPlainTextEdit_stdout.appendHtml("<a href='%s'>%s</a> &nbsp;" % (link, link))
-
         self.scatterMagIndices = []
         self.scatterMagLon = []
         self.scatterMagLat = []
@@ -4162,8 +4160,8 @@ class ObsPyck(QtWidgets.QMainWindow):
         try:
             if event.get("creation_info", {}).get("author", "").startswith("scevent"):
                 loc = None
-        except:
-            print('No CreationInfo for this event')
+        except AttributeError: # No creation_info
+            pass
         picks = self.getPicks(network=net, station=sta)
         try:
             arrivals = event.origins[0].arrivals
