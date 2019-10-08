@@ -31,6 +31,7 @@ import matplotlib.pyplot as plt
 import matplotlib.cm
 import matplotlib.transforms
 import requests
+from datetime import datetime
 from matplotlib.cm import get_cmap
 from matplotlib.patches import Ellipse
 from matplotlib.ticker import FuncFormatter, FormatStrFormatter, MaxNLocator
@@ -64,7 +65,7 @@ from .util import (
     AXVLINEWIDTH, PROGRAMS, getArrivalForPick, POLARITY_2_FOCMEC, gk2lonlat,
     errorEllipsoid2CartesianErrors, readNLLocScatter, ONE_SIGMA, VERSION_INFO,
     MAG_MARKER, getPickForArrival, COMMANDLINE_OPTIONS, set_matplotlib_defaults,
-    check_keybinding_conflicts)
+    check_keybinding_conflicts, surf_xyz2latlon)
 from .event_helper import Catalog, Event, Origin, Pick, Arrival, \
     Magnitude, StationMagnitude, StationMagnitudeContribution, \
     FocalMechanism, ResourceIdentifier, ID_ROOT, readQuakeML, Amplitude, \
@@ -1033,10 +1034,13 @@ class ObsPyck(QtWidgets.QMainWindow):
         #self.delAllItems()
         self.delAxes()
         self.fig.clear()
+        print('Drawing new axes')
         self.drawAxes()
+        print('Updating items')
         self.updateAllItems()
         self.multicursorReinit()
         self.axs[0].set_xlim(xmin, xmax)
+        print('Updating stream')
         self.updateCurrentStream()
         self.updatePlot()
 
@@ -1070,13 +1074,21 @@ class ObsPyck(QtWidgets.QMainWindow):
         Also displays a message.
         """
         # get taper settings from config
-        taper_max_length = self._get_config_value(
-            'base', 'taper_max_length', default=5, type=float)
-        taper_max_percentage = self._get_config_value(
-            'base', 'taper_max_percentage', default=0.05, type=float)
-        taper_type = self._get_config_value(
-            'base', 'taper_type', default='cosine', type=str)
-
+        try:
+            taper_max_length = self._get_config_value(
+                'base', 'taper_max_length', default=5, type=float)
+        except Exception as e:
+            print(e)
+        try:
+            taper_max_percentage = self._get_config_value(
+                'base', 'taper_max_percentage', default=0.05, type=float)
+        except Exception as e:
+            print(e)
+        try:
+            taper_type = self._get_config_value(
+                'base', 'taper_type', default='cosine', type=str)
+        except Exception as e:
+            print(e)
         w = self.widgets
         type = str(w.qComboBox_filterType.currentText()).lower()
         options = {}
@@ -1457,6 +1469,7 @@ class ObsPyck(QtWidgets.QMainWindow):
                                                                   ax.transAxes))
             ax.xaxis.set_major_formatter(FuncFormatter(formatXTicklabels))
             if self.widgets.qToolButton_spectrogram.isChecked():
+                print('In spectrogram processing')
                 log = self.widgets.qCheckBox_spectrogramLog.isChecked()
                 wlen = self.widgets.qDoubleSpinBox_wlen.value()
                 perlap = self.widgets.qDoubleSpinBox_perlap.value()
@@ -2320,12 +2333,10 @@ class ObsPyck(QtWidgets.QMainWindow):
 
         precall = prog_dict['PreCall']
         precall(prog_dict)
-
         f = open(files['phases'], 'wt')
         phases_nlloc = self.dicts2NLLocPhases()
         f.write(phases_nlloc)
         f.close()
-
         self.critical('Phases for NLLoc:')
         self.catFile(files['phases'], self.critical)
 
@@ -2391,10 +2402,18 @@ class ObsPyck(QtWidgets.QMainWindow):
         line = line.split()
         x = float(line[2])
         y = float(line[4])
-        depth = - float(line[6]) # depth: negative down!
+        # depth = - float(line[6]) # depth: negative down!
+        # CJH I reported depths at SURF in meters below 130 m so positive is
+        # down in this case
+        depth = float(line[6])
 
-        lon, lat = gk2lonlat(x, y)
-
+        # lon, lat = gk2lonlat(x, y)
+        # Convert coords
+        print('Doing hypo conversion')
+        # Descale first
+        depth *= 10
+        lon, lat = surf_xyz2latlon(np.array([x]), np.array([y]))
+        print(lon, lat)
         # goto origin time info line
         try:
             line = lines.pop(0)
@@ -2405,7 +2424,6 @@ class ObsPyck(QtWidgets.QMainWindow):
                   "outputfile (%s)!" % files['summary']
             self.error(err)
             return
-
         line = line.split()
         year = int(line[2])
         month = int(line[3])
@@ -2414,7 +2432,10 @@ class ObsPyck(QtWidgets.QMainWindow):
         minute = int(line[6])
         seconds = float(line[7])
         time = UTCDateTime(year, month, day, hour, minute, seconds)
-
+        # Convert to actual time
+        time = UTCDateTime(datetime.fromtimestamp(
+            time.datetime.timestamp() / 100.
+        ))
         # goto location quality info line
         try:
             line = lines.pop(0)
@@ -2440,7 +2461,6 @@ class ObsPyck(QtWidgets.QMainWindow):
                   "outputfile (%s)!" % files['summary']
             self.error(err)
             return
-
         line = line.split()
         # read in the error ellipsoid representation of the location error.
         # this is given as azimuth/dip/length of axis 1 and 2 and as length
@@ -2466,7 +2486,10 @@ class ObsPyck(QtWidgets.QMainWindow):
         errX *= 2
         errY *= 2
         errZ *= 2
-
+        # CJH Now descale to correct dimensions
+        errX /= 100
+        errY /= 100
+        errZ /= 100
         # determine which model was used:
         # XXX handling of path extremely hackish! to be improved!!
         dirname = os.path.dirname(files['summary'])
@@ -2478,7 +2501,6 @@ class ObsPyck(QtWidgets.QMainWindow):
         line2 = line2.split()
         model = line2[3]
         model = model.split("/")[-1]
-
         catalog = self.catalog
         event = catalog[0]
         if event.creation_info is None:
@@ -2490,16 +2512,34 @@ class ObsPyck(QtWidgets.QMainWindow):
         # version field has 64 char maximum per QuakeML RNG schema
         o.creation_info = CreationInfo(creation_time=creation_time,
                                        version=nlloc_version[:64])
-
         # assign origin info
-        o.method_id = "/".join([ID_ROOT, "location_method", "nlloc", "4"])
+        o.method_id = "/".join([ID_ROOT, "location_method", "nlloc", "7"])
+        print('Creating origin uncertainty')
+        o.longitude = lon[0]
+        o.latitude = lat[0]
+        print('Assigning depth {}'.format(depth))
+        o.depth = depth# * (-1e3)  # meters positive down!
+        print('Creating extra AttribDict')
+        # Attribute dict for actual hmc coords
+        extra = AttribDict({
+            'hmc_east': {
+                'value': x,
+                'namespace': 'smi:local/hmc'
+            },
+            'hmc_north': {
+                'value': y,
+                'namespace': 'smi:local/hmc'
+            },
+            'hmc_elev': {
+                'value': depth,
+                'namespace': 'smi:local/hmc'
+            }
+        })
+        o.extra = extra
         o.origin_uncertainty = OriginUncertainty()
         o.quality = OriginQuality()
         ou = o.origin_uncertainty
         oq = o.quality
-        o.longitude = lon
-        o.latitude = lat
-        o.depth = depth * (-1e3)  # meters positive down!
         if errY > errX:
             ou.azimuth_max_horizontal_uncertainty = 0
         else:
@@ -2514,7 +2554,6 @@ class ObsPyck(QtWidgets.QMainWindow):
         o.depth_type = "from location"
         o.earth_model_id = "%s/earth_model/%s" % (ID_ROOT, model)
         o.time = time
-
         # goto synthetic phases info lines
         try:
             line = lines.pop(0)
@@ -2665,7 +2704,8 @@ class ObsPyck(QtWidgets.QMainWindow):
             # residual is defined as P-Psynth by NLLOC!
             arrival.distance = kilometer2degrees(epidist)
             arrival.phase = type
-            arrival.time_residual = res
+            # arrival.time_residual = res
+            arrival.time_residual = res / 100. # CJH descale time too
             arrival.azimuth = azimuth
             if not np.isnan(ray_dip):
                 arrival.takeoff_angle = ray_dip
@@ -2686,10 +2726,10 @@ class ObsPyck(QtWidgets.QMainWindow):
             used_stations.add(station)
         o.used_station_count = len(used_stations)
         self.update_origin_azimuthal_gap()
-
+        print('Made it through location reading')
         # read NLLOC scatter file
-        data = readNLLocScatter(PROGRAMS['nlloc']['files']['scatter'],
-                                self.widgets.qPlainTextEdit_stderr)
+        data = readNLLocScatter(PROGRAMS['nlloc']['files']['scatter'])
+        print('Read in scatter')
         o.nonlinloc_scatter = data
 
     def loadHyp2000Data(self):
@@ -3791,6 +3831,8 @@ class ObsPyck(QtWidgets.QMainWindow):
             phase = pick.phase_hint.ljust(6)
             pol = "?"
             t = pick.time
+            # CJH Hack to accommodate full microsecond precision...
+            t = datetime.fromtimestamp(t.datetime.timestamp() * 100)
             date = t.strftime("%Y%m%d")
             hour_min = t.strftime("%H%M")
             sec = "%7.4f" % (t.second + t.microsecond / 1e6)

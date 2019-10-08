@@ -13,7 +13,7 @@ merge =
 event_server =
 ignore_gse2_chksum_error = true
 # verbosity: one of 'normal', 'verbose', 'debug' or 'quiet'
-verbosity = verbose
+verbosity = debug
 zero_mean = true
 normalization = false
 no_metadata = false
@@ -28,6 +28,13 @@ magnitude_pick_color = green
 # highest/lowest amplitude value when setting a magnitude pick (in number of
 # samples of the time series)
 magnitude_picker_width = 10
+# determines which units the switch for physical units converts to
+# one of: velocity, displacement, acceleration
+physical_units = velocity
+# parameters used in tapering before any filtering (see obspy.Trace.taper)
+taper_max_length = 0.005
+taper_max_percentage = 0.05
+taper_type = cosine
 
 # special purpose / edge use case switches, not widely tested..
 [misc]

@@ -131,8 +131,8 @@ PROGRAMS = {
                                    'summary': "hypo.prt"}},
 
         'focmec': {'filenames': {'exe': "rfocmec", 'phases': "focmec.dat",
-                                     'stdout': "focmec.stdout",
-                                     'summary': "focmec.out"}}}
+                                 'stdout': "focmec.stdout",
+                                 'summary': "focmec.out"}}}
 COMPONENT_COLORS = {'Z': "k", 'N': "b", 'E': "r", '1': 'k'}
 WIDGET_NAMES = ("qToolButton_clearAll", "qToolButton_clearOrigMag",
         "qToolButton_clearFocMec", "qToolButton_doHyp2000",
@@ -912,15 +912,21 @@ def setup_external_programs(options, config):
         return
     prog_dict['PreCall'] = tmp
     def tmp(prog_dict, controlfilename):
-        sub = subprocess.Popen([prog_dict['files']['exe'], controlfilename],
-                cwd=prog_dict['dir'], env=prog_dict['env'], shell=SHELL,
-                stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        # Will error here if exe not named 'NLLoc__Linux__64bit'
+        try:
+            sub = subprocess.Popen([prog_dict['files']['exe'], controlfilename],
+                    cwd=prog_dict['dir'], env=prog_dict['env'], shell=SHELL,
+                    stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        except Exception as e:
+            print(e)
         if system == "Darwin":
             returncode = sub.returncode
         else:
             returncode = sub.wait()
-        msg = "".join(sub.stdout.readlines())
-        err = "".join(sub.stderr.readlines())
+        print('At reading stdout/stderr')
+        # Joining requires bytestring
+        msg = b"".join(sub.stdout.readlines())
+        err = b"".join(sub.stderr.readlines())
         for pattern, key in [("nlloc.*.*.*.loc.scat", 'scatter'),
                              ("nlloc.*.*.*.loc.hyp", 'summary')]:
             pattern = os.path.join(prog_dict['dir'], pattern)
@@ -983,7 +989,6 @@ class MultiCursor(MplMultiCursor):
         else:
             self.vlines = value
 
-
 def gk2lonlat(x, y, m_to_km=True):
     """
     This function converts X/Y Gauss-Krueger coordinates (zone 4, central
@@ -1008,7 +1013,28 @@ def gk2lonlat(x, y, m_to_km=True):
     lon, lat = pyproj.transform(proj_gk4, proj_wgs84, x, y)
     return (lon, lat)
 
-def readNLLocScatter(scat_filename, textviewStdErrImproved):
+def surf_xyz2latlon(x, y):
+    """
+    Convert from scaled surf xyz (in km) to lat lon
+    :param x:
+    :param y:
+    :return:
+    """
+    import pyproj
+
+    # Descale (/10) and convert to meters
+    x *= 10
+    y *= 10
+    pts = zip(x, y)
+    orig_utm = (598420.3842806489, 4912272.275375654)
+    utm = pyproj.Proj(init="EPSG:26713")
+    pts_utm = [(orig_utm[0] + pt[0], orig_utm[1] + pt[1])
+               for pt in pts]
+    utmx, utmy = zip(*pts_utm)
+    lon, lat = utm(utmx, utmy, inverse=True)
+    return (lon, lat)
+
+def readNLLocScatter(scat_filename):
     """
     This function reads location and values of pdf scatter samples from the
     specified NLLoc *.scat binary file (type "<f4", 4 header values, then 4
@@ -1019,9 +1045,14 @@ def readNLLocScatter(scat_filename, textviewStdErrImproved):
     Returns an array of xy pairs.
     """
     # read data, omit the first 4 values (header information) and reshape
+    print('Reading scatter')
     data = np.fromfile(scat_filename, dtype="<f4").astype("float")[4:]
-    data = data.reshape((len(data)/4, 4)).swapaxes(0, 1)
-    data[0], data[1] = gk2lonlat(data[0], data[1])
+    # Explicit floor divide or float--> integer error
+    print('Reshaping')
+    data = data.reshape((data.shape[0] // 4, 4)).swapaxes(0, 1)
+    # data[0], data[1] = gk2lonlat(data[0], data[1])
+    print('Converting scatter coords')
+    data[0], data[1] = surf_xyz2latlon(data[0], data[1])
     return data.T
 
 
