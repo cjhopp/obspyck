@@ -1483,9 +1483,6 @@ class ObsPyck(QtWidgets.QMainWindow):
                     quadmesh_._coordinates[:, :, 0] += self.options.starttime_offset
                 else:
                     x1, x2, y1, y2 = ax.images[0].get_extent()
-                    print('Setting image extents')
-                    print(x1, x2, y1, y2)
-                    print(self.options.starttime_offset)
                     ax.images[0].set_extent((
                         x1 + self.options.starttime_offset,
                         x2 + self.options.starttime_offset, y1, y2))
@@ -2041,6 +2038,8 @@ class ObsPyck(QtWidgets.QMainWindow):
     def doFocmec(self):
         prog_dict = PROGRAMS['focmec']
         files = prog_dict['files']
+        print(prog_dict)
+        print(files)
         #Fortran style! 1: Station 2: Azimuth 3: Incident 4: Polarity
         #fmt = "ONTN  349.00   96.00C"
         fmt = "%4s  %6.2f  %6.2f%1s\n"
@@ -2118,6 +2117,7 @@ class ObsPyck(QtWidgets.QMainWindow):
         self.critical('--> focmec finished')
         lines = open(files['summary'], "rt").readlines()
         self.critical('%i suitable solutions found:' % len(lines))
+        print(lines)
         fms = []
         for line in lines:
             line = line.split()
@@ -2536,7 +2536,7 @@ class ObsPyck(QtWidgets.QMainWindow):
                 'namespace': 'smi:local/hmc'
             },
             'hmc_elev': {
-                'value': depth,
+                'value': 130 - depth, # Extra attribs maintain absolute elevation
                 'namespace': 'smi:local/hmc'
             }
         })

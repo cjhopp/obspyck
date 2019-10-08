@@ -1053,6 +1053,8 @@ def readNLLocScatter(scat_filename):
     # data[0], data[1] = gk2lonlat(data[0], data[1])
     print('Converting scatter coords')
     data[0], data[1] = surf_xyz2latlon(data[0], data[1])
+    # Descale depth too and convert to m (* 100 / 1000 = * 10)
+    data[2] *= 10
     return data.T
 
 
