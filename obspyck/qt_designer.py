@@ -760,7 +760,7 @@ class Ui_qMainWindow_obsPyck(object):
         self.qDoubleSpinBox_wlen = QtWidgets.QDoubleSpinBox(self.yyy)
         self.qDoubleSpinBox_wlen.setFocusPolicy(QtCore.Qt.ClickFocus)
         self.qDoubleSpinBox_wlen.setSuffix(_fromUtf8(""))
-        self.qDoubleSpinBox_wlen.setMinimum(0.1)
+        self.qDoubleSpinBox_wlen.setMinimum(0.001)
         # Allow values up to 50kHz
         self.qDoubleSpinBox_wlen.setMaximum(99.99)
         self.qDoubleSpinBox_wlen.setSingleStep(0.001)

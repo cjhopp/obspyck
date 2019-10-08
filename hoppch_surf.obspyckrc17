@@ -2,7 +2,7 @@
 # duration: int or float
 duration = 0.005
 # starttime_offset: int or float
-starttime_offset = 0
+starttime_offset = 0.0
 pluginpath = /home/chet/obspyck/plugin_dir
 # merge: <empty> or "safe" or "overwrite"
 merge =

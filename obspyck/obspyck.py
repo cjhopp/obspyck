@@ -109,6 +109,8 @@ class ObsPyck(QtWidgets.QMainWindow):
             self.T0 = self.TREF + options.starttime_offset
         else:
             self.T0 = self.TREF + config.getfloat("base", "starttime_offset")
+            self.options.starttime_offset = config.getfloat("base",
+                                                            "starttime_offset")
         # T1 is the end time specified by user
         if options.duration is not None:
             self.T1 = self.T0 + options.duration
@@ -1469,19 +1471,21 @@ class ObsPyck(QtWidgets.QMainWindow):
                                                                   ax.transAxes))
             ax.xaxis.set_major_formatter(FuncFormatter(formatXTicklabels))
             if self.widgets.qToolButton_spectrogram.isChecked():
-                print('In spectrogram processing')
                 log = self.widgets.qCheckBox_spectrogramLog.isChecked()
                 wlen = self.widgets.qDoubleSpinBox_wlen.value()
                 perlap = self.widgets.qDoubleSpinBox_perlap.value()
+                print('Trying spect {}.{}'.format(tr.stats.station, tr.stats.channel))
                 spectrogram(tr.data, tr.stats.sampling_rate, log=log, wlen=wlen, per_lap=perlap,
                             cmap=self.spectrogramColormap, axes=ax, zorder=-10)
-                textcolor = "red"
                 # adjust spectrogram start time offset, relative to reference time
                 if log:
                     quadmesh_ = ax.collections[0]
                     quadmesh_._coordinates[:, :, 0] += self.options.starttime_offset
                 else:
                     x1, x2, y1, y2 = ax.images[0].get_extent()
+                    print('Setting image extents')
+                    print(x1, x2, y1, y2)
+                    print(self.options.starttime_offset)
                     ax.images[0].set_extent((
                         x1 + self.options.starttime_offset,
                         x2 + self.options.starttime_offset, y1, y2))
@@ -1496,6 +1500,7 @@ class ObsPyck(QtWidgets.QMainWindow):
                     plts.append(ax.plot(sampletimes, tr.data / sensitivity * 1e9, color='k', zorder=1000)[0])
                 else:
                     plts.append(ax.plot(sampletimes, tr.data, color='k', zorder=1000)[0])
+        print('Out of trace loop')
         self.drawIds()
         axs[-1].xaxis.set_ticks_position("both")
         label = self.TREF.isoformat().replace("T", "  ")
@@ -4854,7 +4859,6 @@ def main():
     for opt_args, opt_kwargs in COMMANDLINE_OPTIONS:
         parser.add_option(*opt_args, **opt_kwargs)
     (options, args) = parser.parse_args()
-
     # read config file
     if options.config_file:
         config_file = os.path.expanduser(options.config_file)
@@ -4876,7 +4880,6 @@ def main():
     # make all config keys case sensitive
     config.optionxform = str
     config.read(config_file)
-
     # set matplotlibrc changes specified in config (if any)
     set_matplotlib_defaults(config)
 
