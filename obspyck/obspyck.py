@@ -250,7 +250,7 @@ class ObsPyck(QtWidgets.QMainWindow):
             event = Event()
             event.set_creation_info_username(self.username)
             self.catalog.events = [event]
-            self.setXMLEventID()
+            # self.setXMLEventID()
             # indicates which of the available focal mechanisms is selected
             self.focMechCurrent = None
             _cmap_name = self._get_config_value(
@@ -517,7 +517,7 @@ class ObsPyck(QtWidgets.QMainWindow):
             return
         #self.delAllItems()
         self.clearOriginMagnitude()
-        self.setXMLEventID()
+        # self.setXMLEventID()
         self.doHyp2000()
         self.loadHyp2000Data()
         self.calculateEpiHypoDists()
@@ -531,7 +531,7 @@ class ObsPyck(QtWidgets.QMainWindow):
             return
         #self.delAllItems()
         self.clearOriginMagnitude()
-        self.setXMLEventID()
+        # self.setXMLEventID()
         self.doNLLoc()
         self.loadNLLocOutput()
         self.calculateEpiHypoDists()
@@ -545,7 +545,7 @@ class ObsPyck(QtWidgets.QMainWindow):
             return
         self.clearFocmec()
         self.doFocmec()
-        self.setXMLEventID()
+        # self.setXMLEventID()
 
     def on_qToolButton_showMap_toggled(self):
         state = self.widgets.qToolButton_showMap.isChecked()
@@ -1625,7 +1625,7 @@ class ObsPyck(QtWidgets.QMainWindow):
             # some keyPress events only make sense inside our matplotlib axes
             if ev.inaxes not in self.axs:
                 return
-            self.setXMLEventID()
+            # self.setXMLEventID()
 
         if ev.key in [keys['setPick'], keys['setPickError'],
                       keys['setMagMin'], keys['setMagMax'],
@@ -2710,7 +2710,7 @@ class ObsPyck(QtWidgets.QMainWindow):
             arrival.distance = kilometer2degrees(epidist)
             arrival.phase = type
             # arrival.time_residual = res
-            arrival.time_residual = res / 100. # CJH descale time too
+            arrival.time_residual = res / 1000. # CJH descale time too (why 1000)??
             arrival.azimuth = azimuth
             if not np.isnan(ray_dip):
                 arrival.takeoff_angle = ray_dip
@@ -2912,7 +2912,7 @@ class ObsPyck(QtWidgets.QMainWindow):
             self.info("updating magnitude info...")
             self.calculateStationMagnitudes()
             self.updateNetworkMag()
-            self.setXMLEventID()
+            # self.setXMLEventID()
         else:
             self.critical("can not update magnitude (no origin)...")
 
