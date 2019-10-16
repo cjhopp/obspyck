@@ -2528,11 +2528,11 @@ class ObsPyck(QtWidgets.QMainWindow):
         # Attribute dict for actual hmc coords
         extra = AttribDict({
             'hmc_east': {
-                'value': x,
+                'value': x * 10,
                 'namespace': 'smi:local/hmc'
             },
             'hmc_north': {
-                'value': y,
+                'value': y * 10,
                 'namespace': 'smi:local/hmc'
             },
             'hmc_elev': {
