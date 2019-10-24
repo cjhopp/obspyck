@@ -4356,7 +4356,9 @@ class ObsPyck(QtWidgets.QMainWindow):
         if amplitude in event.amplitudes:
             event.amplitudes.remove(amplitude)
 
-    def getPick(self, network=None, station=None, phase_hint=None, waveform_id=None, axes=None, setdefault=False, seed_string=None):
+    def getPick(self, network=None, station=None, phase_hint=None,
+                waveform_id=None, axes=None, setdefault=False,
+                seed_string=None):
         """
         returns first matching pick, does NOT ensure there is only one!
         if setdefault is True then if no pick is found an empty one is returned and inserted into self.picks.
